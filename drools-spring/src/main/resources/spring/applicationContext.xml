@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:kie="http://drools.org/schema/kie-spring"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+        http://drools.org/schema/kie-spring http://drools.org/schema/kie-spring.xsd"
+        default-lazy-init="false"> <!--default-autowire="byName"-->
+
+    <context:component-scan base-package="com.danny.drools.spring.service"/>
+    <context:component-scan base-package="com.danny.drools.spring.dao"/>
+
+    <!-- 每5分钟扫描是否有新版本文件 -->
+    <!--kie:import releaseId-ref="ksession-releaseId" enableScanner="true" scannerInterval="300000"/>
+    <kie:releaseId id="ksession-releaseId" groupId="com.com.danny.rules" artifactId="risk" version="6.5.0.Final"/>
+-->
+
+    <kie:kmodule id="sample_module">
+        <kie:kbase name="pointKBase" packages="rules" >
+            <kie:ksession name="pointKSession" scope="prototype" />
+        </kie:kbase>
+    </kie:kmodule>
+
+    <!--<kie:import releaseId-ref="sptringweb"  enableScanner="true" scannerInterval="12000"/>
+    <kie:releaseId id="sptringweb" groupId="com.com.danny.drools" artifactId="drools-core" version="1.0-SNAPSHOT"/>
+-->
+
+    <!--<bean id="kiePostProcessor" class="org.kie.spring.KModuleBeanFactoryPostProcessor"/>-->
+    <bean id="kiePostProcessor" class="org.kie.spring.annotations.KModuleAnnotationPostProcessor"/>
+
+    <!--找不到drools xsd解决方法：https://stackoverflow.com/questions/21635401/spring-drools-integration-referenced-file-kie-spring-xsd-contains-errors-->
+</beans>
